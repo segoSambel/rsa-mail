@@ -10,11 +10,13 @@ router.post("/", protectedRoute, MessageController.sendMessage);
 
 router.get("/register", AuthController.registerPage);
 router.post("/register", AuthController.performRegister);
+router.get("/login", AuthController.loginPage);
+router.post("/login", AuthController.performLogin);
 router.get(
   "/register/checkDuplicateEmail",
   AuthController.APICheckDuplicateEmail
 );
-router.get("/login", AuthController.loginPage);
-router.post("/login", AuthController.performLogin);
+
+router.get("/logout", protectedRoute, AuthController.performLogout);
 
 export default router;

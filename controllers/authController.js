@@ -73,6 +73,30 @@ const performRegister = (req, res, next) => {
     });
 };
 
+const performLogout = (req, res, next) => {
+  const accessToken = req.cookies["access_token"];
+
+  User.findOne({
+    where: {
+      access_token: accessToken,
+    },
+  })
+    .then((user) => {
+      if (user) {
+        user.access_token = null;
+        user.access_token_expiry = null;
+        user.save();
+      }
+      res.clearCookie("access_token");
+      res.redirect("/login");
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message: error.message || "Some error occurred while logging out.",
+      });
+    });
+};
+
 const APICheckDuplicateEmail = async (req, res, next) => {
   const user = await User.findOne({
     where: {
@@ -96,5 +120,6 @@ export {
   performLogin,
   registerPage,
   performRegister,
+  performLogout,
   APICheckDuplicateEmail,
 };
