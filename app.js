@@ -1,9 +1,13 @@
-import express from "express";
 import path from "path";
-import sequelize from "./config/database.js";
-import router from "./routes/router.js";
+import express from "express";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import { config as dotenvConfig } from "dotenv";
+import router from "./routes/router.js";
+import sequelize from "./config/database.js";
+import cookieParser from "cookie-parser";
+
+dotenvConfig();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -12,6 +16,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
+app.use(cookieParser());
 
 // Set the view engine and views directory
 app.set("view engine", "ejs");
